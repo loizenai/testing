@@ -77,13 +77,37 @@ Question 2:
 -- a
 
 ```
+// -- a
 UPDATE TB_ORDER
-SET TB_ORDER.Total = tb_f.TOTAL
+SET TB_ORDER.Total = TB_F.TOTAL
 FROM
-    SELECT sum(tb_hd1_qty.QTY * item.UNIT_PRICE) as TOTAL
+    (SELECT sum(TB_HD1_QTY.QTY * TB_ITEM.UNIT_PRICE) as TOTAL
+     FROM
+        (SELECT ID, sum(QTY) as QTY from TB_ORDER_DETAIL where ORD_NO = "HD1" group by ID) as TB_HD1_QTY
+        inner join TB_ITEM
+        on TB_HD1_QTY.ID = TB_ITEM.ID
+    ) as TB_F
+WHERE TB_ORDER.ORD_NO = "HD1";
+
+// -- b
+UPDATE TB_ITEM
+SET TB_ITEM.QTY = TB_F.REMAIN_QTY
+FROM
+    (SELECT ID, (TB_ITEM.QTY - TB_CAL_ORDER.ORDER_QTY) as REMAIN_QTY
     FROM
-        (SELECT ID, sum(QTY) as QTY from TB_ORDER_DETAIL where ORD_NO = "HD1" group by ID) as tb_hd1_qty
-        inner join TB_ITEM as item
-        on r1.ID = item.ID
-WHERE ORD_NO = "HD1";
+        (SELECT ID, sum(QTY) as ORDER_QTY from TB_ORDER_DETAIL group by ID) as TB_CAL_ORDER
+            inner join TB_ITEM
+                       on TB_CAL_ORDER.ID = TB_ITEM.ID) as TB_F
+WHERE TB_ITEM.ID = TB_F.ID
+
+// -- c
+SELECT SUM(Total * Discount / 100) FROM TB_ORDER WHERE ORD_DATE = "01/01/2021"
+
+// -- d
+SELECT * FROM TB_ITEM
+WHERE
+    TB_ITEM.ID = SELECT ID
+                 FROM (SELECT ID, MAX(SELL_QTY)
+                        FROM
+                            SELECT ID, SUM(QTY) AS SELL_QTY FROM TB_ORDER_DETAIL GROUP BY ID AS TB_QTY)
 ```
