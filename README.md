@@ -70,3 +70,18 @@ public class Main {
     }
 }
 ```
+
+
+Question 2:
+
+```
+UPDATE TB_ORDER
+SET TB_ORDER.Total = tb_f.TOTAL
+FROM
+    SELECT sum(tb_hd1_qty.QTY * item.UNIT_PRICE) as TOTAL
+    FROM
+        (SELECT ID, sum(QTY) as QTY from TB_ORDER_DETAIL where ORD_NO = "HD1" group by ID) as tb_hd1_qty
+        inner join TB_ITEM as item
+        on r1.ID = item.ID
+WHERE ORD_NO = "HD1";
+```
