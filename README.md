@@ -14,10 +14,13 @@ public class Main {
                 {11, 6, 8, 1},
                 {12, 4, 17, 13}
         };
-        func(a);
+        // - question - a
+        findPairds(a);
+        // - question - b
+        find3Max(a);
     }
 
-    private static void func(Integer a[][]) {
+    private static void findPairds(Integer a[][]) {
         var lst = twoDArrayToList(a);
         printFunc(lst);
     }
@@ -41,6 +44,29 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static void find3Max(Integer[][] a) {
+        int max1 = Integer.MIN_VALUE;
+        int max2 = Integer.MIN_VALUE;
+        int max3 = Integer.MIN_VALUE;
+
+        for (int i = 0; i < a.length; ++i) {
+            for(int j = 0; j < a[i].length; ++j) {
+                var v = a[i][j];
+                if (v > max1) {
+                    max3 = max2;
+                    max2 = max1;
+                    max1 = v;
+                } else if (v > max2) {
+                    max3 = max2;
+                    max2 = v;
+                } else if (v > max3) {
+                    max3 = v;
+                }
+            }
+        }
+        System.out.println("3 max numbers --- " + ": " + max1 + " " + max2 + " " + max3);
     }
 }
 ```
