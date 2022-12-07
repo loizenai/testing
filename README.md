@@ -74,6 +74,8 @@ public class Main {
 
 Question 2:
 
+-- a
+
 ```
 UPDATE TB_ORDER
 SET TB_ORDER.Total = tb_f.TOTAL
