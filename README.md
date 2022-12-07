@@ -111,5 +111,7 @@ WHERE
                             SELECT ID, SUM(QTY) AS SELL_QTY FROM TB_ORDER_DETAIL GROUP BY ID AS TB_QTY)
 ```
 
+Question 3:
+
 <img width="670" alt="image" src="https://user-images.githubusercontent.com/62205284/206278182-37720757-2371-43f3-bf03-4db090b8c564.png">
 
