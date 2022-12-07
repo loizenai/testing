@@ -74,7 +74,6 @@ public class Main {
 
 Question 2:
 
--- a
 
 ```
 // -- a
